@@ -6,7 +6,7 @@
     "version": "8.0.1.0.0",
     "category": "Manufacturing",
     "website": "https://opensynergy-indonesia.com/",
-    "author": "OpenSynergy Indonesia, Odoo Community Association (OCA)",
+    "author": "OpenSynergy Indonesia",
     "license": "AGPL-3",
     "installable": True,
     "depends": [
