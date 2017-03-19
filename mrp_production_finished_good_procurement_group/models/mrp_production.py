@@ -38,7 +38,17 @@ class MrpProduction(models.Model):
             if not mo.fg_procurement_group_id:
                 continue
             for fg in mo.move_created_ids:
-                fg.write(self._prepare_fg_move_proc_group())
+                if not fg.group_id:
+                    fg.write(self._prepare_fg_move_proc_group())
+                for next_move in self._find_next_move(fg):
+                    if not next_move.group_id:
+                        next_move.write(self._prepare_fg_move_proc_group())
+                        self._picking_reassign(
+                            next_move,
+                            next_move.group_id.id,
+                            next_move.location_id.id,
+                            next_move.location_dest_id.id,
+                        )
 
     @api.multi
     def action_ready(self):
@@ -49,7 +59,17 @@ class MrpProduction(models.Model):
             if not mo.fg_procurement_group_id:
                 continue
             for fg in mo.move_created_ids:
-                fg.write(self._prepare_fg_move_proc_group())
+                if not fg.group_id:
+                    fg.write(self._prepare_fg_move_proc_group())
+                for next_move in self._find_next_move(fg):
+                    if not next_move.group_id:
+                        next_move.write(self._prepare_fg_move_proc_group())
+                        self._picking_reassign(
+                            next_move,
+                            next_move.group_id.id,
+                            next_move.location_id.id,
+                            next_move.location_dest_id.id,
+                        )
 
     @api.multi
     def _prepare_fg_move_proc_group(self, group_id=False):
@@ -82,3 +102,20 @@ class MrpProduction(models.Model):
             "fg_procurement_group_id": group_id,
         }
         return result
+
+    @api.model
+    def _find_next_move(self, move):
+        obj_move = self.env["stock.move"]
+        next_move = obj_move
+        move2 = move
+        while move2:
+            if move2.move_dest_id:
+                next_move += move2.move_dest_id
+            move2 = move2.move_dest_id
+        return next_move
+
+    @api.model
+    def _picking_reassign(self, move, group_id, location_id, location_dest_id):
+        move._picking_assign(procurement_group=group_id,
+                             location_from=location_id,
+                             location_to=location_dest_id)
