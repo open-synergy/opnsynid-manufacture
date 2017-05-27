@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+<record id="mrp_production_view_form" model="ir.ui.view">
+    <field name="name">mrp.production form - byproduct cost</field>
+    <field name="model">mrp.production</field>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//notebook" position="inside">
+                <page name="page_byproduct" string="Byproduct">
+                    <group name="grp_byproduct_calculation" string="Byproduct Calculation" colspan="4" col="2">
+                        <field name="byproduct_cost_alocation_method" invisible="1"/>
+                        <field name="byproduct_cost_ids" colspan="2" nolabel="1" 
+                            context="{'default_byproduct_cost_alocation_method': byproduct_cost_alocation_method}">
+                            <tree string="Byproduct Calculation">
+                                <field name="product_id"/>
+                                <field name="join_cost"/>
+                                <field name="byproduct_cost"/>
+                            </tree>
+                            <form>
+                                <group name="grp_byproduct" colspan="4" col="2">
+                                    <field name="production_id" invisible="1"/>
+                                    <field name="product_id"/>
+                                    <field name="join_cost_method"/>
+                                    <field name="byproduct_cost_alocation_method" invisible="1"/>
+                                    <field name="join_cost_ids" colspan="2" nolabel="1" 
+                                        attrs="{'invisible':[('join_cost_method','!=','manual_selection')]}"/>
+                                    <field name="manual_join_cost"
+                                        attrs="{'invisible':[('join_cost_method','!=','manual')]}"/>
+                                    <field name="join_cost" 
+                                        attrs="{'invisible':[('join_cost_method','=','manual')]}"/>
+                                    <field name="multiplier" 
+                                        attrs="{'invisible':[('byproduct_cost_alocation_method','!=','weighted')]}"/>
+                                    <field name="byproduct_cost"/>
+                                </group>
+                            </form>
+                        </field>
+                        <field name="bp_real_cost"/>
+                    </group>
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+</data>
+</openerp>
