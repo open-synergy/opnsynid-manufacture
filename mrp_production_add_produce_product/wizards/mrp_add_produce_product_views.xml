@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2017 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+<record id="mrp_add_produce_product_view_form" model="ir.ui.view">
+    <field name="name">mrp.add_produce_product</field>
+    <field name="model">mrp.add_produce_product</field>
+    <field name="arch" type="xml">
+        <form>
+            <group name="group_main" colspan="4" col="2">
+                <field name="product_id"/>
+                <label for="product_qty"/>
+                <div>
+                    <field name="product_qty" class="oe_inline"/>
+                    <field name="uom_id" class="oe_inline" groups="product.group_uom"/>
+                </div>
+            </group>
+            <footer>
+                <button name="button_add" string="Add" class="oe_highlight" type="object"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>
+
+<record id="action_mrp_add_produce_product" model="ir.actions.act_window">
+    <field name="name">Add Produce Product</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">mrp.add_produce_product</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="mrp_add_produce_product_view_form"/>
+    <field name="target">new</field>
+</record>
+</data>
+</openerp>
