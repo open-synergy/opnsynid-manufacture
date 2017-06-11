@@ -144,6 +144,3 @@ class MrpProduction(models.Model):
         string="Byproduct Real Cost",
         compute="_compute_total_bp",
     )
-    move_created_ids = fields.One2many(
-        readonly=False,
-    )
