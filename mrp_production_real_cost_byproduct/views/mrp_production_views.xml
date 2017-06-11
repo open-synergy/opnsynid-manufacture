@@ -15,7 +15,8 @@
                     <group name="grp_byproduct_calculation" string="Byproduct Calculation" colspan="4" col="2">
                         <field name="byproduct_cost_alocation_method" invisible="1"/>
                         <field name="byproduct_cost_ids" colspan="2" nolabel="1" 
-                            context="{'default_byproduct_cost_alocation_method': byproduct_cost_alocation_method}">
+                            context="{'default_byproduct_cost_alocation_method': byproduct_cost_alocation_method}"
+                            >
                             <tree string="Byproduct Calculation">
                                 <field name="product_id"/>
                                 <field name="join_cost"/>
