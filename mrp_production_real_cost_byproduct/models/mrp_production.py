@@ -85,6 +85,11 @@ class MrpByproductCostCalculation(models.Model):
         compute="_compute_cost",
     )
 
+    _sql_constraints = [
+        ("product_unique", "unique(product_id, production_id)",
+            "No same products"),
+    ]
+
 
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
@@ -144,3 +149,23 @@ class MrpProduction(models.Model):
         string="Byproduct Real Cost",
         compute="_compute_total_bp",
     )
+
+    @api.multi
+    def bom_id_change(self, bom_id):
+        result = super(MrpProduction, self).bom_id_change(bom_id)
+        obj_bom = self.env["mrp.bom"]
+        byproducts = []
+
+        if bom_id:
+            bom = obj_bom.browse([bom_id])[0]
+
+            if bom.sub_products:
+                for product in bom.sub_products:
+                    res = {
+                        "product_id": product.product_id.id,
+                        "join_cost_method": "auto",
+                    }
+                    byproducts.append((0, 0, res))
+
+        result["value"].update({"byproduct_cost_ids": byproducts})
+        return result
