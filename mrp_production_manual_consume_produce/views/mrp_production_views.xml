@@ -10,12 +10,25 @@
     <field name="arch" type="xml">
         <data>
             <xpath expr="//field[@name='move_created_ids']/tree/field[@name='state']" position="before">
+                <button name="action_cancel" type="object" string="Cancel" icon="gtk-cancel"/>
                 <button name="%(action_mrp_produce_finished_good)d" type="action" string="Produce" icon="gtk-go-forward"/>
+            </xpath>
+
+            <xpath expr="//field[@name='move_lines']/tree/field[@name='state']" position="before">
+                <button name="action_cancel" type="object" string="Cancel" icon="gtk-cancel"/>
+            </xpath>
+
+            <xpath expr="//field[@name='move_lines']/tree/button[@name='%(stock.move_scrap)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
             <xpath expr="//header/button[@name='%(mrp.act_mrp_product_produce)d']" position="attributes">
                 <attribute name="invisible">1</attribute>
                 <attribute name="states"></attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='move_created_ids2']/tree/button[@name='%(stock.move_scrap)d']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </data>
     </field>
