@@ -60,5 +60,19 @@ class AddProduceProduct(models.TransientModel):
             "company_id": production.company_id.id,
             "production_id": production.id,
             "origin": production.name,
+            "group_id": self._get_proc_group_id()
         }
         return data
+
+    @api.multi
+    def _get_proc_group_id(self):
+        self.ensure_one()
+        production_id = self.env.context.get("active_id", False)
+        criteria = [
+            ("production_id", "=", production_id),
+        ]
+        procs = self.env["procurement.order"].search(criteria)
+        if len(procs) == 0:
+            return False
+
+        return procs[0].group_id and procs[0].group_id.id or False
