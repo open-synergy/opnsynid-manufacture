@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+<record id="mrp_production_view_form" model="ir.ui.view">
+    <field name="name">mrp.production form - Manual Start and End Date</field>
+    <field name="model">mrp.production</field>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_finished']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_finished']" position="after">
+                <field name="manual_date_start"/>
+                <field name="manual_date_finished"/>
+            </xpath>
+        </data>
+    </field>
+</record>
+</data>
+</openerp>
