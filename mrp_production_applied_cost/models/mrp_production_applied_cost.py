@@ -14,7 +14,7 @@ class MrpProductionAppliedCost(models.Model):
     @api.multi
     @api.depends(
         "price_unit",
-        "amount_total",
+        "product_qty",
     )
     def _compute_total(self):
         for applied in self:
