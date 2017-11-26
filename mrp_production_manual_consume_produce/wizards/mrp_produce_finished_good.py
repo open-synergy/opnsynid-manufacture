@@ -55,10 +55,16 @@ class StockMove(models.TransientModel):
         self.ensure_one()
         move_id = self.env.context.get("active_id", False)
         move = self.env["stock.move"].browse([move_id])[0]
+        lot_id = self._get_lot_id()
         new_move_ids = move.action_consume(
             self.product_qty,
-            restrict_lot_id=self.lot_id and self.lot_id.id or False)
+            restrict_lot_id=lot_id)
         self.env["stock.move"].browse(new_move_ids).write({
             "production_id": move.production_id.id,
         })
         return True
+
+    @api.multi
+    def _get_lot_id(self):
+        self.ensure_one()
+        return self.lot_id and self.lot_id.id or False
