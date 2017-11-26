@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2017 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+<record id="mrp_produce_finished_good_view_form" model="ir.ui.view">
+    <field name="name">mrp.produce_finished_good - Backdating</field>
+    <field name="model">mrp.produce_finished_good</field>
+    <field name="inherit_id" ref="mrp_production_manual_consume_produce.mrp_produce_finished_good_view_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="date_backdating"/>
+            </xpath>
+        </data>
+    </field>
+</record>
+
+</data>
+</openerp>
