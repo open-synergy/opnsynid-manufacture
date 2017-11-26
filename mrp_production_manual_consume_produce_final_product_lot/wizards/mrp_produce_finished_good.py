@@ -9,14 +9,14 @@ class StockMove(models.TransientModel):
     _inherit = "mrp.produce_finished_good"
 
     @api.multi
-    def button_produce(self):
+    def _get_lot_id(self):
         self.ensure_one()
-        obj_lot = self.env["stock.production.lot"]
+        lot = self.lot_id
         move_id = self.env.context.get("active_id", False)
         move = self.env["stock.move"].browse([move_id])[0]
-        lot = self.lot_id
         code = (move.production_id.manual_production_lot or
                 move.production_id.name or "")
+        obj_lot = self.env["stock.production.lot"]
         if not lot:
             lots = obj_lot.search([
                 ("name", "=", code),
@@ -30,10 +30,4 @@ class StockMove(models.TransientModel):
                 lot = obj_lot.create(vals)
             else:
                 lot = lots[0]
-        new_move_ids = move.action_consume(
-            self.product_qty,
-            restrict_lot_id=lot and lot.id or False)
-        self.env["stock.move"].browse(new_move_ids).write({
-            "production_id": move.production_id.id,
-        })
-        return True
+        return lot and lot.id or False
