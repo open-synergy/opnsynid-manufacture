@@ -12,7 +12,7 @@ class StockMove(models.Model):
     def get_price_unit(self, move):
         if move.production_id:
             if move._is_byproduct():
-                return move._get_byproduct_cost() / move.product_qty
+                return move._get_byproduct_cost()
             elif move._is_main_product():
                 return move.production_id.real_cost / move.product_qty
             else:

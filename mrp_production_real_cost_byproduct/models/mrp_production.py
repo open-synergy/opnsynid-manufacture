@@ -10,6 +10,15 @@ class MrpByproductCostCalculation(models.Model):
     _description = "Byproduct Cost Calculation"
 
     @api.multi
+    @api.depends(
+        "join_cost_method",
+        "join_cost_ids",
+        "join_cost_ids.amount",
+        "join_cost_ids.unit_amount",
+        "compute_unit_price_from",
+        "manual_join_cost",
+        "production_id",
+    )
     def _compute_join_cost(self):
         obj_line = self.env["account.analytic.line"]
         for cost in self:
@@ -22,19 +31,44 @@ class MrpByproductCostCalculation(models.Model):
                     ("id", "in", cost.join_cost_ids.ids))
             if cost.join_cost_method != "manual":
                 for line in obj_line.search(criteria):
-                    cost.join_cost += -1.0 * line.amount
+                    if cost.compute_unit_price_from == "total":
+                        cost.join_cost += -1.0 * line.amount
+                    else:
+                        cost.join_cost += -1.0 * \
+                            (line.amount / line.unit_amount)
             else:
                 cost.join_cost = cost.manual_join_cost
 
     @api.multi
     def _compute_cost(self):
         for cost in self:
+            obj_move = self.env["stock.move"]
+            qty_produced = 0.0
+            byproduct_cost = 0.0
+            byproduct_subtotal = 0.0
+            criteria = [
+                ("product_id", "=", cost.product_id.id),
+                ("state", "=", "done"),
+                ("production_id", "=", cost.production_id.id),
+            ]
+            produced_stock_moves = obj_move.search(
+                criteria)
+            if len(produced_stock_moves) > 0:
+                cost.produced_stock_move_ids = produced_stock_moves.ids
+            for move in produced_stock_moves:
+                qty_produced += move.product_qty
+
+            cost.qty_produced = qty_produced
+
             cost.product_qty_result = 0.0
             if cost.byproduct_cost_alocation_method == "unit":
                 # TODO: Not implemented
                 cost.byproduct_cost = 0.0
             elif cost.byproduct_cost_alocation_method == "weighted":
-                cost.byproduct_cost = cost.multiplier * cost.join_cost
+                byproduct_cost = cost.multiplier * cost.join_cost
+                byproduct_subtotal = byproduct_cost * qty_produced
+            cost.byproduct_cost = byproduct_cost
+            cost.byproduct_subtotal = byproduct_subtotal
 
     production_id = fields.Many2one(
         string="# MO",
@@ -63,6 +97,15 @@ class MrpByproductCostCalculation(models.Model):
         required=True,
         default="auto",
     )
+    compute_unit_price_from = fields.Selection(
+        string="Compute Unit Price From",
+        selection=[
+            ("total", "Total"),
+            ("unit_price", "Unit Price"),
+        ],
+        required=True,
+        default="total",
+    )
     manual_join_cost = fields.Float(
         string="Join Cost",
     )
@@ -84,6 +127,19 @@ class MrpByproductCostCalculation(models.Model):
         string="Byproduct Cost",
         compute="_compute_cost",
     )
+    byproduct_subtotal = fields.Float(
+        string="Byproduct Cost",
+        compute="_compute_cost",
+    )
+    produced_stock_move_ids = fields.Many2many(
+        string="Produced",
+        comodel_name="stock.move",
+        compute="_compute_cost",
+    )
+    qty_produced = fields.Float(
+        string="Qty. Produced",
+        compute="_compute_cost",
+    )
 
     _sql_constraints = [
         ("product_unique", "unique(product_id, production_id)",
@@ -99,21 +155,33 @@ class MrpProduction(models.Model):
         for mo in self:
             mo.bp_real_cost = 0.0
             for bp in mo.byproduct_cost_ids:
-                mo.bp_real_cost += bp.byproduct_cost
+                mo.bp_real_cost += bp.byproduct_subtotal
 
     @api.multi
     @api.depends(
         "analytic_line_ids", "analytic_line_ids.amount",
         "product_qty", "bp_real_cost", "byproduct_cost_ids",
-        "byproduct_cost_ids.byproduct_cost")
+        "byproduct_cost_ids.byproduct_cost", "move_created_ids2")
     def _compute_real_cost(self):
         for production in self:
+            obj_move = self.env["stock.move"]
+            criteria = [
+                ("production_id", "=", production.id),
+                ("product_id", "=", production.product_id.id),
+                ("state", "=", "done"),
+            ]
+            qty_produced = 0.0
+            for move in obj_move.search(criteria):
+                qty_produced += move.product_qty
             cost_lines = production.analytic_line_ids.filtered(
                 lambda l: l.amount < 0)
             production.real_cost = - \
                 sum(cost_lines.mapped('amount')) - production.bp_real_cost
-            production.unit_real_cost = (
-                production.real_cost / production.product_qty)
+            if qty_produced == 0:
+                production.unit_real_cost = 0
+            else:
+                production.unit_real_cost = (
+                    production.real_cost / qty_produced)
 
     real_cost = fields.Float(
         compute="_compute_real_cost",
