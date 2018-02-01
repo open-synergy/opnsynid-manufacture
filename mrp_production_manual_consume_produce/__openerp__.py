@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Manufacturing Order's Manual Control to Consume and Produce",
-    "version": "8.0.1.1.1",
+    "version": "8.0.1.2.0",
     "category": "Manufacturing",
     "website": "https://opensynergy-indonesia.com/",
     "author": "OpenSynergy Indonesia",
@@ -13,6 +13,7 @@
         "mrp_production_manual_close",
     ],
     "data": [
+        "wizards/stock_move_consume.xml",
         "wizards/mrp_produce_finished_good_views.xml",
         "views/mrp_production_views.xml",
     ],
