@@ -9,6 +9,10 @@
     <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
     <field name="arch" type="xml">
         <data>
+            <xpath expr="//field[@name='state']" position="before">
+                <button name="%(action_group_move_consume)d" type="action" string="Consume" states="in_production"/>
+                <button name="%(action_mrp_group_produce_finished_good)d" type="action" string="Produce" states="in_production"/>
+            </xpath>
             <xpath expr="//field[@name='move_created_ids']/tree/field[@name='state']" position="before">
                 <button name="action_cancel" type="object" string="Cancel" icon="gtk-cancel"/>
                 <button name="%(action_mrp_produce_finished_good)d" type="action" string="Produce" icon="gtk-go-forward"/>
