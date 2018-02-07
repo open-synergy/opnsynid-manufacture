@@ -12,7 +12,7 @@
             <group name="group_main" colspan="4" col="2">
                 <field name="production_id" col="2" invisible="1"/>
                 <field name="line_ids" nolabel="1" col="2">
-                    <tree editable="top" create="false" delete="false">
+                    <tree editable="top" create="false">
                         <field name="move_id" invisible="1"/>
                         <field name="product_id"/>
                         <field name="product_qty" class="oe_inline"/>
