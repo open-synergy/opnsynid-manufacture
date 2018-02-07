@@ -4,6 +4,17 @@
 
 <openerp>
 <data>
+<record id="mrp_group_produce_finished_good_view_form" model="ir.ui.view">
+    <field name="name">mrp.group_produce_finished_good</field>
+    <field name="model">mrp.group_produce_finished_good</field>
+    <field name="inherit_id" ref="mrp_production_manual_consume_produce.mrp_group_produce_finished_good_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//tree/field[@name='move_id']" position="before">
+            <field name="date_backdating"/>
+        </xpath>
+    </field>
+</record>
+
 <record id="mrp_produce_finished_good_view_form" model="ir.ui.view">
     <field name="name">mrp.produce_finished_good - Backdating</field>
     <field name="model">mrp.produce_finished_good</field>

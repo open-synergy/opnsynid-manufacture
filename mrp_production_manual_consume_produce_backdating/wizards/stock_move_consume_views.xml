@@ -4,6 +4,19 @@
 
 <openerp>
 <data>
+<record id="group_move_consume_view_form" model="ir.ui.view">
+    <field name="name">stock.group_move_consume</field>
+    <field name="model">stock.group_move_consume</field>
+    <field name="inherit_id" ref="mrp_production_manual_consume_produce.group_move_consume_view_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//tree/field[@name='move_id']" position="before">
+                <field name="date_backdating"/>
+            </xpath>
+        </data>
+    </field>
+</record>
+
 <record id="stock_move_consume_view_form" model="ir.ui.view">
     <field name="name">stock.move.consume - Backdating</field>
     <field name="model">stock.move.consume</field>
