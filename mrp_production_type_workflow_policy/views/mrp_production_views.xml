@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+<record id="mrp_production_view_form" model="ir.ui.view">
+    <field name="name">mrp.production form</field>
+    <field name="model">mrp.production</field>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//button[@name='button_confirm']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','!=','draft'),('confirm_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//button[@name='%(mrp.act_mrp_product_produce)d']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','not in',['ready','in_production']),('produce_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//button[@name='action_assign']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','not in',['confirmed','picking_except']),('check_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//button[@name='force_production']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','!=','confirmed'),('force_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//button[@name='button_produce']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','!=','ready'),('start_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','not in',['draft','ready','in_production']),('cancel_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="attrs">{'invisible':['|',('state','!=','confirmed'),('cancel_ok','=',False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="workflow" string="Workflow Policy" groups="base.group_system">
+                    <group name="workflow_1" colspan="4" col="2">
+                        <field name="confirm_ok"/>
+                        <field name="produce_ok"/>
+                        <field name="check_ok"/>
+                        <field name="force_ok"/>
+                        <field name="start_ok"/>
+                        <field name="cancel_ok"/>
+                    </group>
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+</data>
+</openerp>
