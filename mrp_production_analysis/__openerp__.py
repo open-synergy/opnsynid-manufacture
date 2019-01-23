@@ -4,7 +4,7 @@
 # pylint: disable=locally-disabled, manifest-required-author
 {
     "name": "Production Order Analysis",
-    "version": "8.0.1.0.0",
+    "version": "8.0.1.1.0",
     "category": "Manufacturing",
     "website": "https://opensynergy-indonesia.com/",
     "author": "OpenSynergy Indonesia",
@@ -15,6 +15,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "reports/mrp_production_rm_comparation_report.xml",
         "views/mrp_production_views.xml",
     ],
 }
