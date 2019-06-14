@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2019 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+    <record id="mrp_production_type_view_form" model="ir.ui.view">
+        <field name="name">mrp.production_type.location.form</field>
+        <field name="model">mrp.production_type</field>
+        <field name="inherit_id" ref="mrp_production_type.mrp_production_type_view_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//page[@name='note']" position="before">
+                    <page name="locations" string="Location Policy">
+                        <group name="location_1" colspan="4" col="2">
+                            <field name="default_raw_material_location_id"/>
+                        </group>
+                        <group name="location_2" colspan="4" col="2" string="Allowed Raw Materials Location">
+                            <field name="allowed_raw_material_location_ids" nolabel="1" colspan="2"/>
+                        </group>
+                        <group name="location_3" colspan="4" col="2">
+                            <field name="default_finished_prod_location_id"/>
+                        </group>
+                        <group name="location_4" colspan="4" col="2" string="Allowed Finished Products Location">
+                            <field name="allowed_finished_prod_location_ids" nolabel="1" colspan="2"/>
+                        </group>
+                    </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</data>
+</openerp>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2019 OpenSynergy Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<openerp>
+<data>
+<record id="mrp_production_view_form" model="ir.ui.view">
+    <field name="name">mrp.production.location.form</field>
+    <field name="model">mrp.production</field>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="allowed_location_src_ids" widget="many2many_tags" invisible="1"/>
+                <field name="allowed_location_dest_ids" widget="many2many_tags" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='location_src_id']" position="attributes">
+                <attribute name="domain">
+                    [('id', 'in', allowed_location_src_ids[0][2])]
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                <attribute name="domain">
+                    [('id', 'in', allowed_location_dest_ids[0][2])]
+                </attribute>
+            </xpath>
+        </data>
+    </field>
+</record>
+</data>
+</openerp>
