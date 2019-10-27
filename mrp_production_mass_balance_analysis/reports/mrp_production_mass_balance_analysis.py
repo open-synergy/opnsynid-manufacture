@@ -43,6 +43,9 @@ class MrpProductionMassBalanceAnalysis(models.Model):
     loss_quantity = fields.Float(
         string="Loss Quantity"
     )
+    in_out_comparison = fields.Float(
+        string="In/Out Comparison"
+    )
 
     def _select(self):
         select_str = """
@@ -56,7 +59,15 @@ class MrpProductionMassBalanceAnalysis(models.Model):
             a.location_dest_id AS location_dest_id,
             SUM(b.mass_in_quantity) AS mass_in_quantity,
             SUM(b.mass_out_quantity) AS mass_out_quantity,
-            SUM(b.loss_quantity) AS loss_quantity
+            SUM(b.loss_quantity) AS loss_quantity,
+            CASE
+                WHEN
+                    SUM(b.mass_out_quantity) > 0.0
+                    THEN
+                    SUM(b.mass_in_quantity) / SUM(b.mass_out_quantity)
+                ELSE
+                    0.0
+                END AS in_out_comparison
         """
         return select_str
 

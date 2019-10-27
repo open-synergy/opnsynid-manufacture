@@ -65,6 +65,7 @@
             <field name="mass_in_quantity" type="measure"/>
             <field name="mass_out_quantity" type="measure"/>
             <field name="loss_quantity" type="measure"/>
+            <field name="in_out_comparison" type="measure"/>
         </graph>
     </field>
 </record>
