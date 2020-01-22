@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
     "name": "Manufacturing Order Byproduct Real Cost",
-    "version": "8.0.3.0.0",
+    "version": "8.0.3.0.1",
     "category": "Manufacturing",
     "website": "https://opensynergy-indonesia.com/",
     "author": "OpenSynergy Indonesia",
