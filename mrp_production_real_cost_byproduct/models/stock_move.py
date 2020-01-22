@@ -51,3 +51,8 @@ class StockMove(models.Model):
         if obj_bp.search_count(criteria) > 0:
             result = obj_bp.search(criteria, limit=1)[0].byproduct_cost
         return result
+
+    @api.multi
+    def product_price_update_production_done(self):
+        # TODO: Take account of avg
+        return True
