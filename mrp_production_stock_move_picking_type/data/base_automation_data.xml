@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 OpenSynergy Indonesia
+     Copyright 2021 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+
+<odoo>
+<data>
+
+<record id="base_automation_rule_1_data" model="base.automation">
+    <field name="name">Update RM Consumption</field>
+    <field name="model_id" ref="stock.model_stock_move"/>
+    <field name="trigger">on_create</field>
+    <field name="state">code</field>
+    <field name="act_user_id" ref="base.user_root"/>
+    <field name="filter_domain">[["raw_material_production_id","!=",False]]</field>
+    <field name="code">
+mo = record.raw_material_production_id
+record.write({"picking_type_id": mo._get_production_rm_type().id})
+    </field>
+</record>
+
+<record id="base_automation_rule_2_data" model="base.automation">
+    <field name="name">Update Production Result</field>
+    <field name="model_id" ref="stock.model_stock_move"/>
+    <field name="trigger">on_create</field>
+    <field name="state">code</field>
+    <field name="act_user_id" ref="base.user_root"/>
+    <field name="filter_domain">[["production_id","!=",False]]</field>
+    <field name="code">
+mo = record.production_id
+record.write({"picking_type_id": mo._get_production_fg_type().id})
+    </field>
+</record>
+
+</data>
+</odoo>
