@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class GroupStockMoveConsume(models.TransientModel):
@@ -14,9 +14,11 @@ class GroupStockMoveConsume(models.TransientModel):
         _super = super(GroupStockMoveConsume, self)
         results = _super._default_line_ids()
         for result in results:
-            result[2].update({
-                "date_backdating": fields.Datetime.now(),
-            })
+            result[2].update(
+                {
+                    "date_backdating": fields.Datetime.now(),
+                }
+            )
         return results
 
 
@@ -37,11 +39,15 @@ class StockMoveConsume(models.TransientModel):
         _super = super(StockMoveConsume, self)
         _super.do_move_consume()
         move = self.move_id
-        move.write({
-            "date": self.date_backdating,
-        })
+        move.write(
+            {
+                "date": self.date_backdating,
+            }
+        )
         if move.quant_ids:
-            move.quant_ids.sudo().write({
-                "in_date": self.date_backdating,
-            })
+            move.quant_ids.sudo().write(
+                {
+                    "in_date": self.date_backdating,
+                }
+            )
         return True

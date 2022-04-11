@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class GroupProduceFinishedGood(models.TransientModel):
@@ -35,11 +35,15 @@ class ProduceFinishedGood(models.TransientModel):
         _super = super(ProduceFinishedGood, self)
         _super.button_produce()
         move = self.move_id
-        move.write({
-            "date": self.date_backdating,
-        })
+        move.write(
+            {
+                "date": self.date_backdating,
+            }
+        )
         if move.quant_ids:
-            move.quant_ids.sudo().write({
-                "in_date": self.date_backdating,
-            })
+            move.quant_ids.sudo().write(
+                {
+                    "in_date": self.date_backdating,
+                }
+            )
         return True

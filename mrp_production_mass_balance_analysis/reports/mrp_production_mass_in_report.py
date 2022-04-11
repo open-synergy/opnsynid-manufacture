@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, fields
-from openerp import tools
+from openerp import fields, models, tools
 
 
 class MrpProductionMassInReport(models.Model):
@@ -15,10 +14,7 @@ class MrpProductionMassInReport(models.Model):
         string="# MO",
         comodel_name="mrp.production",
     )
-    move_id = fields.Many2one(
-        string="Stock Move",
-        comodel_name="stock.move"
-    )
+    move_id = fields.Many2one(string="Stock Move", comodel_name="stock.move")
     product_id = fields.Many2one(
         string="Product",
         comodel_name="product.product",
@@ -26,9 +22,7 @@ class MrpProductionMassInReport(models.Model):
     date = fields.Datetime(
         string="Date",
     )
-    quantity = fields.Float(
-        string="Quantity"
-    )
+    quantity = fields.Float(string="Quantity")
 
     def _select(self):
         select_str = """
@@ -85,17 +79,20 @@ class MrpProductionMassInReport(models.Model):
     def init(self, cr):
         tools.drop_view_if_exists(cr, self._table)
         # pylint: disable=locally-disabled, sql-injection
-        cr.execute("""CREATE or REPLACE VIEW %s as (
+        cr.execute(
+            """CREATE or REPLACE VIEW %s as (
             %s
             FROM %s
             %s
             %s
             %s
-        )""" % (
-            self._table,
-            self._select(),
-            self._from(),
-            self._join(),
-            self._where(),
-            self._group_by()
-        ))
+        )"""
+            % (
+                self._table,
+                self._select(),
+                self._from(),
+                self._join(),
+                self._where(),
+                self._group_by(),
+            )
+        )

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, fields, api
+from openerp import api, fields, models
 
 
 class MrpProduction(models.Model):
@@ -38,13 +38,11 @@ class MrpProduction(models.Model):
         data = []
         uom_obj = self.env["product.uom"]
         factor = uom_obj._compute_qty(
-            self.product_uom.id,
-            self.product_qty,
-            self.bom_id.product_uom.id)
+            self.product_uom.id, self.product_qty, self.bom_id.product_uom.id
+        )
         factor = factor / self.bom_id.product_qty
         for cost in self.bom_id.applied_cost_ids:
-            data.append((0, 0,
-                         cost._prepare_production_applied_cost(factor)))
+            data.append((0, 0, cost._prepare_production_applied_cost(factor)))
 
         return {
             "applied_cost_ids": data,

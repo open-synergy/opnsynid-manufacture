@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class GrpupProduceFinishedGood(models.TransientModel):
@@ -15,12 +15,18 @@ class GrpupProduceFinishedGood(models.TransientModel):
         mo = self.env["mrp.production"].browse([mo_id])[0]
         result = []
         for move in mo.move_created_ids:
-            result.append((0, 0, {
-                "move_id": move.id,
-                "product_id": move.product_id.id,
-                "product_qty": move.product_uom_qty,
-                "uom_id": move.product_uom.id,
-            }))
+            result.append(
+                (
+                    0,
+                    0,
+                    {
+                        "move_id": move.id,
+                        "product_id": move.product_id.id,
+                        "product_qty": move.product_uom_qty,
+                        "uom_id": move.product_uom.id,
+                    },
+                )
+            )
         return result
 
     line_ids = fields.One2many(
@@ -119,11 +125,13 @@ class ProduceFinishedGood(models.TransientModel):
         self.ensure_one()
         lot_id = self._get_lot_id()
         new_move_ids = self.move_id.action_consume(
-            self.product_qty,
-            restrict_lot_id=lot_id)
-        self.env["stock.move"].browse(new_move_ids).write({
-            "production_id": self.move_id.production_id.id,
-        })
+            self.product_qty, restrict_lot_id=lot_id
+        )
+        self.env["stock.move"].browse(new_move_ids).write(
+            {
+                "production_id": self.move_id.production_id.id,
+            }
+        )
         return True
 
     @api.multi

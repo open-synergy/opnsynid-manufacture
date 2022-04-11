@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Copyright 2016 OpenSynergy Indonesia
 # Copyright 2016 Eficent Business and IT Consulting Services, S.L.
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, fields, api
+from openerp import api, fields, models
 
 
 class MrpProduction(models.Model):
@@ -75,17 +75,18 @@ class MrpProduction(models.Model):
     def _prepare_fg_move_proc_group(self, group_id=False):
         self.ensure_one()
         if not group_id:
-            group_id = self.fg_procurement_group_id and \
-                self.fg_procurement_group_id.id or False
+            group_id = (
+                self.fg_procurement_group_id
+                and self.fg_procurement_group_id.id
+                or False
+            )
         result = {
             "group_id": group_id,
         }
         return result
 
     @api.model
-    def _fg_move_picking_reassign(
-            move, group_id,
-            location_id, location_dest_id):
+    def _fg_move_picking_reassign(self, move, group_id, location_id, location_dest_id):
         move._picking_assign(
             move,
             group_id,
@@ -96,8 +97,11 @@ class MrpProduction(models.Model):
     @api.multi
     def _prepare_fg_procurement_group(self):
         self.ensure_one()
-        group_id = self.raw_material_procurement_group_id and \
-            self.raw_material_procurement_group_id.id or False
+        group_id = (
+            self.raw_material_procurement_group_id
+            and self.raw_material_procurement_group_id.id
+            or False
+        )
         result = {
             "fg_procurement_group_id": group_id,
         }
@@ -116,6 +120,8 @@ class MrpProduction(models.Model):
 
     @api.model
     def _picking_reassign(self, move, group_id, location_id, location_dest_id):
-        move._picking_assign(procurement_group=group_id,
-                             location_from=location_id,
-                             location_to=location_dest_id)
+        move._picking_assign(
+            procurement_group=group_id,
+            location_from=location_id,
+            location_to=location_dest_id,
+        )

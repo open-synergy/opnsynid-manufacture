@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api
+from openerp import api, models
 
 
 class StockMove(models.Model):
@@ -24,8 +24,7 @@ class StockMove(models.Model):
     def _is_byproduct(self):
         self.ensure_one()
         mo = self.production_id
-        if self.product_id.id in \
-                mo.byproduct_cost_ids.mapped("product_id.id"):
+        if self.product_id.id in mo.byproduct_cost_ids.mapped("product_id.id"):
             return True
         else:
             return False

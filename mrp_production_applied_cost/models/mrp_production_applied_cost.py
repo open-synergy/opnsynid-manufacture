@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
-from openerp import models, fields, api
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# pylint: disable=E8103
 from datetime import datetime
-from openerp import tools
+
+from openerp import api, fields, models, tools
 
 
 class MrpProductionAppliedCost(models.Model):
@@ -58,9 +58,11 @@ class MrpProductionAppliedCost(models.Model):
 
     @api.model
     def _default_credit_account_id(self):
-        return self.env["ir.property"].get(
-            "property_account_expense_categ",
-            "product.category").id
+        return (
+            self.env["ir.property"]
+            .get("property_account_expense_categ", "product.category")
+            .id
+        )
 
     debit_account_id = fields.Many2one(
         string="Debit Account",
@@ -129,8 +131,7 @@ class MrpProductionAppliedCost(models.Model):
     @api.multi
     def _create_move(self):
         self.ensure_one()
-        move = self.env["account.move"].create(
-            self._prepare_move_data())
+        move = self.env["account.move"].create(self._prepare_move_data())
         return move
 
     @api.multi
@@ -149,26 +150,37 @@ class MrpProductionAppliedCost(models.Model):
         self.ensure_one()
         result = []
         project = self.mo_id.project_id
-        result.append((0, 0, {
-            "name": self.name,
-            "account_id": self.debit_account_id.id,
-            "debit": self.amount_total,
-            "credit": 0.0,
-            "analytic_account_id": project.analytic_account_id.id,
-        }))
-        result.append((0, 0, {
-            "name": self.name,
-            "account_id": self.credit_account_id.id,
-            "credit": self.amount_total,
-            "debit": 0.0,
-        }))
+        result.append(
+            (
+                0,
+                0,
+                {
+                    "name": self.name,
+                    "account_id": self.debit_account_id.id,
+                    "debit": self.amount_total,
+                    "credit": 0.0,
+                    "analytic_account_id": project.analytic_account_id.id,
+                },
+            )
+        )
+        result.append(
+            (
+                0,
+                0,
+                {
+                    "name": self.name,
+                    "account_id": self.credit_account_id.id,
+                    "credit": self.amount_total,
+                    "debit": 0.0,
+                },
+            )
+        )
         return result
 
     @api.multi
     def _get_period(self):
         self.ensure_one()
-        return self.env["account.period"].find(
-            self.date)
+        return self.env["account.period"].find(self.date)
 
     @api.multi
     def _update_analytic_line(self):
@@ -177,10 +189,12 @@ class MrpProductionAppliedCost(models.Model):
             ("move_id.move_id", "=", self.move_id.id),
         ]
         lines = self.env["account.analytic.line"].search(criteria)
-        lines.write({
-            "mrp_production_id": self.mo_id.id,
-            "journal_id": self.analytic_journal_id.id,
-        })
+        lines.write(
+            {
+                "mrp_production_id": self.mo_id.id,
+                "journal_id": self.analytic_journal_id.id,
+            }
+        )
 
 
 class MrpProductionAppliedCostSummary(models.Model):
@@ -222,10 +236,11 @@ class MrpProductionAppliedCostSummary(models.Model):
 
     def init(self, cr):
         tools.drop_view_if_exists(cr, self._table)
-        cr.execute("""CREATE or REPLACE VIEW %s AS (
+        cr.execute(
+            """CREATE or REPLACE VIEW %s AS (
             %s
             FROM %s
             %s
-            )""" % (
-            self._table, self._select(),
-            self._from(), self._group_by()))
+            )"""
+            % (self._table, self._select(), self._from(), self._group_by())
+        )

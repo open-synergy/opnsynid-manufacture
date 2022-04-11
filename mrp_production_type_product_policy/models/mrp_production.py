@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class MrpProduction(models.Model):
@@ -13,10 +13,8 @@ class MrpProduction(models.Model):
         for mo in self:
             self.allowed_product_ids = []
             if mo.type_id:
-                mo.allowed_product_ids = \
-                    mo.type_id.allowed_product_ids
-                mo.allowed_product_categ_ids = \
-                    mo.type_id.allowed_product_categ_ids
+                mo.allowed_product_ids = mo.type_id.allowed_product_ids
+                mo.allowed_product_categ_ids = mo.type_id.allowed_product_categ_ids
 
     allowed_product_ids = fields.Many2many(
         string="Allowed Products",
@@ -44,5 +42,5 @@ class MrpProduction(models.Model):
                 ("categ_id", "in", mo_type.allowed_product_categ_ids.ids),
             ]
         else:
-            domain.append(('bom_ids', '!=', False))
+            domain.append(("bom_ids", "!=", False))
         return {"domain": {"product_id": domain}}

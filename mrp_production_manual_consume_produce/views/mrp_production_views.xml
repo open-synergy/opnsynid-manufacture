@@ -1,37 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2017 OpenSynergy Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <openerp>
 <data>
 <record id="mrp_production_view_form" model="ir.ui.view">
-    <field name="name">mrp.production form - Produce Button on Product To Produce</field>
+    <field
+                name="name"
+            >mrp.production form - Produce Button on Product To Produce</field>
     <field name="model">mrp.production</field>
-    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view" />
     <field name="arch" type="xml">
         <data>
             <xpath expr="//field[@name='state']" position="before">
-                <button name="%(action_group_move_consume)d" type="action" string="Consume" states="in_production"/>
-                <button name="%(action_mrp_group_produce_finished_good)d" type="action" string="Produce" states="in_production"/>
+                <button
+                            name="%(action_group_move_consume)d"
+                            type="action"
+                            string="Consume"
+                            states="in_production"
+                        />
+                <button
+                            name="%(action_mrp_group_produce_finished_good)d"
+                            type="action"
+                            string="Produce"
+                            states="in_production"
+                        />
             </xpath>
-            <xpath expr="//field[@name='move_created_ids']/tree/field[@name='state']" position="before">
-                <button name="action_cancel" type="object" string="Cancel" icon="gtk-cancel"/>
-                <button name="%(action_mrp_produce_finished_good)d" type="action" string="Produce" icon="gtk-go-forward"/>
+            <xpath
+                        expr="//field[@name='move_created_ids']/tree/field[@name='state']"
+                        position="before"
+                    >
+                <button
+                            name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            icon="gtk-cancel"
+                        />
+                <button
+                            name="%(action_mrp_produce_finished_good)d"
+                            type="action"
+                            string="Produce"
+                            icon="gtk-go-forward"
+                        />
             </xpath>
 
-            <xpath expr="//field[@name='move_lines']/tree/field[@name='state']" position="before">
-                <button name="action_cancel" type="object" string="Cancel" icon="gtk-cancel"/>
+            <xpath
+                        expr="//field[@name='move_lines']/tree/field[@name='state']"
+                        position="before"
+                    >
+                <button
+                            name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            icon="gtk-cancel"
+                        />
             </xpath>
 
-            <xpath expr="//field[@name='move_lines']/tree/button[@name='%(stock.move_scrap)d']" position="attributes">
+            <xpath
+                        expr="//field[@name='move_lines']/tree/button[@name='%(stock.move_scrap)d']"
+                        position="attributes"
+                    >
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <xpath expr="//header/button[@name='%(mrp.act_mrp_product_produce)d']" position="attributes">
+            <xpath
+                        expr="//header/button[@name='%(mrp.act_mrp_product_produce)d']"
+                        position="attributes"
+                    >
                 <attribute name="invisible">1</attribute>
-                <attribute name="states"></attribute>
+                <attribute name="states" />
             </xpath>
 
-            <xpath expr="//field[@name='move_created_ids2']/tree/button[@name='%(stock.move_scrap)d']" position="attributes">
+            <xpath
+                        expr="//field[@name='move_created_ids2']/tree/button[@name='%(stock.move_scrap)d']"
+                        position="attributes"
+                    >
                 <attribute name="invisible">1</attribute>
             </xpath>
         </data>

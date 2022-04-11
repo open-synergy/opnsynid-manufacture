@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, fields, api
+from openerp import api, fields, models
 
 
 class MrpBomAppliedCost(models.Model):
@@ -51,9 +51,11 @@ class MrpBomAppliedCost(models.Model):
 
     @api.model
     def _default_credit_account_id(self):
-        return self.env["ir.property"].get(
-            "property_account_expense_categ",
-            "product.category").id
+        return (
+            self.env["ir.property"]
+            .get("property_account_expense_categ", "product.category")
+            .id
+        )
 
     debit_account_id = fields.Many2one(
         string="Debit Account",

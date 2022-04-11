@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, fields
-from openerp import tools
+from openerp import fields, models, tools
 
 
 class MrpProductionMassBalanceAnalysis(models.Model):
@@ -34,18 +33,10 @@ class MrpProductionMassBalanceAnalysis(models.Model):
         string="Finished Product Location",
         comodel_name="stock.location",
     )
-    mass_in_quantity = fields.Float(
-        string="Mass In Quantity"
-    )
-    mass_out_quantity = fields.Float(
-        string="Mass Out Quantity"
-    )
-    loss_quantity = fields.Float(
-        string="Loss Quantity"
-    )
-    in_out_comparison = fields.Float(
-        string="In/Out Comparison"
-    )
+    mass_in_quantity = fields.Float(string="Mass In Quantity")
+    mass_out_quantity = fields.Float(string="Mass Out Quantity")
+    loss_quantity = fields.Float(string="Loss Quantity")
+    in_out_comparison = fields.Float(string="In/Out Comparison")
 
     def _select(self):
         select_str = """
@@ -107,17 +98,20 @@ class MrpProductionMassBalanceAnalysis(models.Model):
     def init(self, cr):
         tools.drop_view_if_exists(cr, self._table)
         # pylint: disable=locally-disabled, sql-injection
-        cr.execute("""CREATE or REPLACE VIEW %s as (
+        cr.execute(
+            """CREATE or REPLACE VIEW %s as (
             %s
             FROM %s
             %s
             %s
             %s
-        )""" % (
-            self._table,
-            self._select(),
-            self._from(),
-            self._join(),
-            self._where(),
-            self._group_by()
-        ))
+        )"""
+            % (
+                self._table,
+                self._select(),
+                self._from(),
+                self._join(),
+                self._where(),
+                self._group_by(),
+            )
+        )

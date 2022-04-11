@@ -1,23 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2017 OpenSynergy Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <openerp>
 <data>
 <record id="mrp_production_view_form" model="ir.ui.view">
     <field name="name">Add products to produce</field>
     <field name="model">mrp.production</field>
-    <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+    <field name="inherit_id" ref="mrp.mrp_production_form_view" />
     <field name="arch" type="xml">
         <data>
             <xpath expr="//page[@string='Finished Products']" position="inside">
                 <group name="group_add_produce_product" colspan="4">
                     <div>
-                        <button name="%(action_mrp_add_produce_product)d"
-                            string="Add Products to Produce"
-                            type="action"
-                            class="oe_highlight oe_inline"
-                            states="confirmed,ready,in_production"
-                            />
+                        <button
+                                    name="%(action_mrp_add_produce_product)d"
+                                    string="Add Products to Produce"
+                                    type="action"
+                                    class="oe_highlight oe_inline"
+                                    states="confirmed,ready,in_production"
+                                />
                     </div>
                 </group>
             </xpath>

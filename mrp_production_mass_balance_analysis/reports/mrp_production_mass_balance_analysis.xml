@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2017 Opensynergy Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
-
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <openerp>
 <data>
 
@@ -10,48 +9,159 @@
     <field name="model">mrp.production_mass_balance_analysis</field>
     <field name="arch" type="xml">
         <search>
-            <field name="production_id"/>
-            <field name="user_id"/>
-            <field name="bom_id"/>
-            <field name="location_src_id"/>
-            <field name="location_dest_id"/>
-            <filter name="dom_empty" string="Empty" domain="[('id','=',0)]"/>
+            <field name="production_id" />
+            <field name="user_id" />
+            <field name="bom_id" />
+            <field name="location_src_id" />
+            <field name="location_dest_id" />
+            <filter name="dom_empty" string="Empty" domain="[('id','=',0)]" />
             <group name="filter_date_planned" string="Date Planned">
-                <filter string="Today" domain="[('date_planned','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('date_planned','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
-                <filter string="01" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,1,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,1,31), datetime.time(23,59,59)))]"/>
-                <filter string="02" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,2,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,2,1) + relativedelta(months=1) + relativedelta(days=-1), datetime.time(23,59,59)))]"/>
-                <filter string="03" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,3,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,3,31), datetime.time(23,59,59)))]"/>
-                <filter string="04" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,4,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,4,30), datetime.time(23,59,59)))]"/>
-                <filter string="05" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,5,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,5,31), datetime.time(23,59,59)))]"/>
-                <filter string="06" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,6,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,6,30), datetime.time(23,59,59)))]"/>
-                <filter string="07" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,7,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,7,31), datetime.time(23,59,59)))]"/>
-                <filter string="08" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,8,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,8,31), datetime.time(23,59,59)))]"/>
-                <filter string="09" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,9,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,9,30), datetime.time(23,59,59)))]"/>
-                <filter string="10" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,10,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,10,31), datetime.time(23,59,59)))]"/>
-                <filter string="11" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,11,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,11,30), datetime.time(23,59,59)))]"/>
-                <filter string="12" domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,12,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,12,31), datetime.time(23,59,59)))]"/>
+                <filter
+                            string="Today"
+                            domain="[('date_planned','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))), ('date_planned','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"
+                        />
+                <filter
+                            string="01"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,1,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,1,31), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="02"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,2,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,2,1) + relativedelta(months=1) + relativedelta(days=-1), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="03"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,3,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,3,31), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="04"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,4,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,4,30), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="05"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,5,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,5,31), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="06"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,6,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,6,30), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="07"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,7,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,7,31), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="08"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,8,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,8,31), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="09"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,9,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,9,30), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="10"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,10,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,10,31), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="11"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,11,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,11,30), datetime.time(23,59,59)))]"
+                        />
+                <filter
+                            string="12"
+                            domain="[('date_planned','&gt;=', datetime.datetime.combine(datetime.date(context_today().year,12,1), datetime.time(0,0,0))), ('date_planned','&lt;=', datetime.datetime.combine(datetime.date(context_today().year,12,31), datetime.time(23,59,59)))]"
+                        />
             </group>
             <group name="row_grp" string="Row Grouping">
-                <filter name="row_grp_production" string="# Production" context="{'group_by':'production_id'}"/>
-                <filter name="row_grp_user" string="Responsible" context="{'group_by':'responsible_id'}"/>
-                <filter name="row_grp_bom" string="BoM" context="{'group_by':'bom_id'}"/>
-                <filter name="row_grp_location_src" string="Raw Material Location" context="{'group_by':'location_src_id'}"/>
-                <filter name="row_grp_location_dest" string="Finished Good Location" context="{'group_by':'location_dest_id'}"/>
-                <filter name="row_grp_date_planned_year" string="Date Planned by Year" context="{'group_by':'date_planned:year'}"/>
-                <filter name="row_grp_date_planned_month" string="Date Planned by Month" context="{'group_by':'date_planned:month'}"/>
-                <filter name="row_grp_date_planned_week" string="Date Planned by Week" context="{'group_by':'date_planned:week'}"/>
-                <filter name="row_grp_date_planned_day" string="Date Planned by Day" context="{'group_by':'date_planned:day'}"/>
+                <filter
+                            name="row_grp_production"
+                            string="# Production"
+                            context="{'group_by':'production_id'}"
+                        />
+                <filter
+                            name="row_grp_user"
+                            string="Responsible"
+                            context="{'group_by':'responsible_id'}"
+                        />
+                <filter
+                            name="row_grp_bom"
+                            string="BoM"
+                            context="{'group_by':'bom_id'}"
+                        />
+                <filter
+                            name="row_grp_location_src"
+                            string="Raw Material Location"
+                            context="{'group_by':'location_src_id'}"
+                        />
+                <filter
+                            name="row_grp_location_dest"
+                            string="Finished Good Location"
+                            context="{'group_by':'location_dest_id'}"
+                        />
+                <filter
+                            name="row_grp_date_planned_year"
+                            string="Date Planned by Year"
+                            context="{'group_by':'date_planned:year'}"
+                        />
+                <filter
+                            name="row_grp_date_planned_month"
+                            string="Date Planned by Month"
+                            context="{'group_by':'date_planned:month'}"
+                        />
+                <filter
+                            name="row_grp_date_planned_week"
+                            string="Date Planned by Week"
+                            context="{'group_by':'date_planned:week'}"
+                        />
+                <filter
+                            name="row_grp_date_planned_day"
+                            string="Date Planned by Day"
+                            context="{'group_by':'date_planned:day'}"
+                        />
             </group>
             <group name="col_grp" string="Column Grouping">
-                <filter name="col_grp_production" string="# Production" context="{'col_group_by':'production_id'}"/>
-                <filter name="col_grp_user" string="Responsible" context="{'col_group_by':'responsible_id'}"/>
-                <filter name="col_grp_bom" string="BoM" context="{'col_group_by':'bom_id'}"/>
-                <filter name="col_grp_location_src" string="Raw Material Location" context="{'col_group_by':'location_src_id'}"/>
-                <filter name="col_grp_location_dest" string="Finished Good Location" context="{'col_group_by':'location_dest_id'}"/>
-                <filter name="col_grp_date_planned_year" string="Date Planned by Year" context="{'col_group_by':'date_planned:year'}"/>
-                <filter name="col_grp_date_planned_month" string="Date Planned by Month" context="{'col_group_by':'date_planned:month'}"/>
-                <filter name="col_grp_date_planned_week" string="Date Planned by Week" context="{'col_group_by':'date_planned:week'}"/>
-                <filter name="col_grp_date_planned_day" string="Date Planned by Day" context="{'col_group_by':'date_planned:day'}"/>
+                <filter
+                            name="col_grp_production"
+                            string="# Production"
+                            context="{'col_group_by':'production_id'}"
+                        />
+                <filter
+                            name="col_grp_user"
+                            string="Responsible"
+                            context="{'col_group_by':'responsible_id'}"
+                        />
+                <filter
+                            name="col_grp_bom"
+                            string="BoM"
+                            context="{'col_group_by':'bom_id'}"
+                        />
+                <filter
+                            name="col_grp_location_src"
+                            string="Raw Material Location"
+                            context="{'col_group_by':'location_src_id'}"
+                        />
+                <filter
+                            name="col_grp_location_dest"
+                            string="Finished Good Location"
+                            context="{'col_group_by':'location_dest_id'}"
+                        />
+                <filter
+                            name="col_grp_date_planned_year"
+                            string="Date Planned by Year"
+                            context="{'col_group_by':'date_planned:year'}"
+                        />
+                <filter
+                            name="col_grp_date_planned_month"
+                            string="Date Planned by Month"
+                            context="{'col_group_by':'date_planned:month'}"
+                        />
+                <filter
+                            name="col_grp_date_planned_week"
+                            string="Date Planned by Week"
+                            context="{'col_group_by':'date_planned:week'}"
+                        />
+                <filter
+                            name="col_grp_date_planned_day"
+                            string="Date Planned by Day"
+                            context="{'col_group_by':'date_planned:day'}"
+                        />
             </group>
         </search>
     </field>
@@ -62,10 +172,10 @@
     <field name="model">mrp.production_mass_balance_analysis</field>
     <field name="arch" type="xml">
         <graph type="pivot">
-            <field name="mass_in_quantity" type="measure"/>
-            <field name="mass_out_quantity" type="measure"/>
-            <field name="loss_quantity" type="measure"/>
-            <field name="in_out_comparison" type="measure"/>
+            <field name="mass_in_quantity" type="measure" />
+            <field name="mass_out_quantity" type="measure" />
+            <field name="loss_quantity" type="measure" />
+            <field name="in_out_comparison" type="measure" />
         </graph>
     </field>
 </record>
@@ -76,17 +186,21 @@
     <field name="view_type">form</field>
     <field name="view_mode">graph</field>
     <field name="context">{'search_default_dom_empty':1}</field>
-    <field name="view_id" ref="mrp_production_mass_balance_analysis_view_graph"/>
-    <field name="search_view_id" ref="mrp_production_mass_balance_analysis_view_search"/>
+    <field name="view_id" ref="mrp_production_mass_balance_analysis_view_graph" />
+    <field
+                name="search_view_id"
+                ref="mrp_production_mass_balance_analysis_view_search"
+            />
 </record>
 
 
 <menuitem
-    id="mrp_production_mass_balance_analysis_menu"
-    name="Production Mass Balance Analysis"
-    parent="mrp.next_id_77"
-    action="mrp_production_mass_balance_analysis_action"
-    sequence="1" />
+            id="mrp_production_mass_balance_analysis_menu"
+            name="Production Mass Balance Analysis"
+            parent="mrp.next_id_77"
+            action="mrp_production_mass_balance_analysis_action"
+            sequence="1"
+        />
 
 </data>
 </openerp>

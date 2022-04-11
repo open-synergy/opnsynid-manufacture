@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2016 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class MrpByproductCostCalculation(models.Model):
@@ -18,8 +18,7 @@ class MrpByproductCostCalculation(models.Model):
                 ("mrp_production_id", "=", cost.production_id.id),
             ]
             if cost.join_cost_method == "manual_selection":
-                criteria.append(
-                    ("id", "in", cost.join_cost_ids.ids))
+                criteria.append(("id", "in", cost.join_cost_ids.ids))
             if cost.join_cost_method != "manual":
                 for line in obj_line.search(criteria):
                     cost.join_cost += -1.0 * line.amount
@@ -86,8 +85,7 @@ class MrpByproductCostCalculation(models.Model):
     )
 
     _sql_constraints = [
-        ("product_unique", "unique(product_id, production_id)",
-            "No same products"),
+        ("product_unique", "unique(product_id, production_id)", "No same products"),
     ]
 
 
@@ -103,17 +101,20 @@ class MrpProduction(models.Model):
 
     @api.multi
     @api.depends(
-        "analytic_line_ids", "analytic_line_ids.amount",
-        "product_qty", "bp_real_cost", "byproduct_cost_ids",
-        "byproduct_cost_ids.byproduct_cost")
+        "analytic_line_ids",
+        "analytic_line_ids.amount",
+        "product_qty",
+        "bp_real_cost",
+        "byproduct_cost_ids",
+        "byproduct_cost_ids.byproduct_cost",
+    )
     def _compute_real_cost(self):
         for production in self:
-            cost_lines = production.analytic_line_ids.filtered(
-                lambda l: l.amount < 0)
-            production.real_cost = - \
-                sum(cost_lines.mapped('amount')) - production.bp_real_cost
-            production.unit_real_cost = (
-                production.real_cost / production.product_qty)
+            cost_lines = production.analytic_line_ids.filtered(lambda l: l.amount < 0)
+            production.real_cost = (
+                -sum(cost_lines.mapped("amount")) - production.bp_real_cost
+            )
+            production.unit_real_cost = production.real_cost / production.product_qty
 
     real_cost = fields.Float(
         compute="_compute_real_cost",

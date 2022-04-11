@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2018 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class GroupStockMoveConsume(models.TransientModel):
@@ -19,13 +19,19 @@ class GroupStockMoveConsume(models.TransientModel):
         mo = self.env["mrp.production"].browse([mo_id])[0]
         result = []
         for move in mo.move_lines:
-            result.append((0, 0, {
-                "move_id": move.id,
-                "product_id": move.product_id.id,
-                "product_qty": move.product_uom_qty,
-                "product_uom": move.product_uom.id,
-                "location_id": move.location_id.id,
-            }))
+            result.append(
+                (
+                    0,
+                    0,
+                    {
+                        "move_id": move.id,
+                        "product_id": move.product_id.id,
+                        "product_qty": move.product_uom_qty,
+                        "product_uom": move.product_uom.id,
+                        "location_id": move.location_id.id,
+                    },
+                )
+            )
         return result
 
     production_id = fields.Many2one(

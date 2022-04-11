@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2017 OpenSynergy Indonesia
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
-
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <openerp>
 <data>
 <record id="group_move_consume_view_form" model="ir.ui.view">
@@ -10,25 +9,36 @@
     <field name="arch" type="xml">
         <form>
             <group name="group_main" colspan="4" col="2">
-                <field name="production_id" col="2" invisible="1"/>
+                <field name="production_id" col="2" invisible="1" />
                 <field name="line_ids" nolabel="1" col="2">
                     <tree editable="top" create="false">
-                        <field name="move_id" invisible="1"/>
-                        <field name="product_id"/>
-                        <field name="product_qty" class="oe_inline"/>
-                        <field name="product_uom" class="oe_inline" groups="product.group_uom"/>
-                        <field name="restrict_lot_id" 
-                            domain="[('product_id', '=', product_id)]"
-                            context="{'default_product_id': product_id}"
-                            groups="stock.group_production_lot"/>
-                        <field name="location_id"/>
+                        <field name="move_id" invisible="1" />
+                        <field name="product_id" />
+                        <field name="product_qty" class="oe_inline" />
+                        <field
+                                    name="product_uom"
+                                    class="oe_inline"
+                                    groups="product.group_uom"
+                                />
+                        <field
+                                    name="restrict_lot_id"
+                                    domain="[('product_id', '=', product_id)]"
+                                    context="{'default_product_id': product_id}"
+                                    groups="stock.group_production_lot"
+                                />
+                        <field name="location_id" />
                     </tree>
                 </field>
             </group>
             <footer>
-                <button name="action_consume" string="Consume" class="oe_highlight" type="object"/>
+                <button
+                            name="action_consume"
+                            string="Consume"
+                            class="oe_highlight"
+                            type="object"
+                        />
                 or
-                <button string="Cancel" class="oe_link" special="cancel"/>
+                <button string="Cancel" class="oe_link" special="cancel" />
             </footer>
         </form>
     </field>
@@ -40,7 +50,7 @@
     <field name="res_model">stock.group_move_consume</field>
     <field name="view_type">form</field>
     <field name="view_mode">form</field>
-    <field name="view_id" ref="group_move_consume_view_form"/>
+    <field name="view_id" ref="group_move_consume_view_form" />
     <field name="target">new</field>
 </record>
 </data>

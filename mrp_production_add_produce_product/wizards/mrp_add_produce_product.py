@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2017 OpenSynergy Indonesia
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from openerp import models, api, fields
+from openerp import api, fields, models
 
 
 class AddProduceProduct(models.TransientModel):
@@ -34,8 +34,7 @@ class AddProduceProduct(models.TransientModel):
     def button_add(self):
         self.ensure_one()
         obj_move = self.env["stock.move"]
-        move = obj_move.create(
-            self._prepare_additional_produce_product())
+        move = obj_move.create(self._prepare_additional_produce_product())
         move.action_confirm()
         return True
 
@@ -51,16 +50,18 @@ class AddProduceProduct(models.TransientModel):
             "product_id": self.product_id.id,
             "product_uom": self.uom_id.id,
             "product_uom_qty": self.product_qty,
-            "product_uos_qty": (production.product_uos and
-                                production.product_uos_qty or False),
-            "product_uos": (production.product_uos and
-                            production.product_uos.id or False),
+            "product_uos_qty": (
+                production.product_uos and production.product_uos_qty or False
+            ),
+            "product_uos": (
+                production.product_uos and production.product_uos.id or False
+            ),
             "location_id": src_loc.id,
             "location_dest_id": production.location_dest_id.id,
             "company_id": production.company_id.id,
             "production_id": production.id,
             "origin": production.name,
-            "group_id": self._get_proc_group_id()
+            "group_id": self._get_proc_group_id(),
         }
         return data
 
